@@ -1,0 +1,61 @@
+
+
+// Import sendmail module
+import sendmail from 'sendmail';
+
+/**
+ * @function sendEmail
+ * 
+ * @description 
+ *  A function to send emails. Utilizes the sendmail npm library.
+ * 
+ * @param {string} senderEmail - The email address from which the mail should be sent.
+ * @param {string} senderPassword - The password of the sender's email.
+ *                              !!! Be aware of storing sensitive data in your code!!!
+ * 
+ * @param {string} receiverEmail - The recipient's email - where the email will be sent.
+ * 
+ * @param {string} subject - The subject line of the email.
+ * 
+ * @param {string} htmlContent - The main content of the email, structured with HTML tags.
+ * 
+ * @returns {boolean} - Returns a boolean: true if the mail was sent successfully, and false if there was an issue.
+ */
+async function sendEmail(senderEmail, senderPassword, receiverEmail, subject, htmlContent) {
+
+    try {
+        // Configure sendmail options
+        let mailOptions = {
+            from: senderEmail,  
+            to: receiverEmail,   
+            subject: subject,   
+            html: htmlContent,   // For HTML content, use 'html' key 
+        };
+
+        // Create and send an email
+        sendmail(mailOptions, (error, reply) => {
+            // Handle errors
+            if (error) {
+                console.error(`Error occurred while sending email: ${error.message}`);
+                return false;
+            }
+            
+            // Log the reply from the sendmail method
+            console.log(`Message sent: ${reply}`);
+
+            // Return true as the email has been sent successfully
+            return true;
+        });
+
+    } catch (error) {
+        // Log the error message
+        console.error(`Error occurred while sending email: ${error.message}`);
+
+        // Return false as the email was not sent successfully
+        return false;
+    }
+}
+
+// Export the function to be imported and used in other files
+export default sendEmail;
+

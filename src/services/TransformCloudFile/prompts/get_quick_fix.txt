@@ -1,0 +1,67 @@
+Add the following fixes to this function:
+
+
+/**
+ * This function is used to make Cloudinary transforms on an uploaded file.
+ * Cloudinary is a cloud service that offers a solution to a web application's entire image management pipeline.
+ *
+ * @param {Object} params - Function parameters.
+ * @param {string} params.publicId - The publicId of the uploaded file on Cloudinary.
+ * @param {string} params.apiKey - The API key for authentication.
+ * @param {string} params.apiSecret - The API Secret for authentication.
+ * @param {string} params.cloudName - The name of the cloud storage where the file is stored in Cloudinary.
+ * @param {Array.<Object>} params.transformations - A list of transformations to apply to the file.
+ * @param {string} [params.resourceType='auto'] - The type of the file (image, video etc.).
+ * @param {function} params.onSuccess - A callback function when the transformation process is successful.
+ * @param {function} params.onError - A callback function when there are errors during the transformation process.
+ */
+async function TransformCloudFile({
+    publicId, 
+    apiKey, 
+    apiSecret,
+    cloudName, 
+    transformations, 
+    resourceType='auto', 
+    onSuccess,
+    onError
+}) {
+    try {
+        // Configure the Cloudinary SDK with provided credentials
+        cloudinary.config({ 
+            cloud_name: cloudName, 
+            api_key: apiKey, 
+            api_secret: apiSecret 
+        });
+
+        // Apply transformations by concatenating them with "/"
+        const transformationString = transformations.join("/");
+        
+        // Here we use Cloudinary's api to apply transformations to the uploaded file
+        // We use the `explicit` method which allows us to specify transformation changes on a given resource
+        const result = await cloudinary.v2.api.explicit(publicId, {
+            transformation: transformationString,
+            type: resourceType
+        });
+
+        // onSuccess should be called here, passing in the response from cloudinary
+        if(onSuccess && typeof onSuccess === 'function'){
+            onSuccess(result);
+        }
+
+        return result;
+        
+    } catch (error) {
+        
+        // onError should be called here with the error that has been caught
+        if(onError && typeof onError === 'function'){
+            onError(error);
+        }
+
+        console.log("An error occurred while transforming the file", error);
+    }
+}
+
+export default TransformCloudFile;
+
+
+Fixes_should_be_here

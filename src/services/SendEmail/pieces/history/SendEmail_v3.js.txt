@@ -1,0 +1,60 @@
+
+
+// Importing the emailjs module
+import { Email } from "emailjs";
+
+/**
+ * @function SendEmail
+ * @description Assist in sending emails
+ * @param {string} senderEmail - Email address of the sender
+ * @param {string} senderPassword - Password of the sender email
+ * @param {string} receiverEmail - Email address of the receiver
+ * @param {string} subject - The subject of the email
+ * @param {string} htmlContent - The HTML content of the email
+ * @returns {boolean} - Returns true if sending succeeds, false otherwise
+ */
+async function sendEmail(senderEmail, senderPassword, receiverEmail, subject, htmlContent) {
+  try {
+    // Server details are being laid out here. 
+    // These include the sender's email and password, smtp host and port
+    const server = email.server.connect({
+      user: senderEmail,
+      password: senderPassword,
+      host: "smtp.example.com",
+      port: 587,
+      ssl: false,
+    });
+
+    // Mail details are being laid out here.  
+    const mailOptions = {
+      from: senderEmail,
+      to: receiverEmail,
+      subject: subject,
+      attachment: 
+      [
+          {data: htmlContent, alternative: true}
+      ]
+    };
+
+    // Sending mail using defined server and mail options
+    // An error or message is returned upon attempted delivery
+    server.send(mailOptions, (error, message) => {
+      if (error) {
+        console.log(`Error occurred: ${error.message}`);
+        return false;
+      } else {
+        console.log(`Message sent: ${message}`);
+        return true;
+      }
+    });
+
+  } catch (error) {
+    // Prints error and it's message to console in the case of an error
+    console.error(`Error occurred: ${error.message}`);
+    return false;
+  }
+}
+
+// Export function sendEmail
+export default sendEmail;
+

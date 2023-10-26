@@ -1,0 +1,1 @@
+Compile code_string, and return the generated hex file content, as a string. the onSuccess callback must be fed the same hex file content string that's returned.

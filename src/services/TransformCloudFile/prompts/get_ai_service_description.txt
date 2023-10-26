@@ -1,0 +1,1 @@
+A function that makes Cloudinary transforms on a uploaded file

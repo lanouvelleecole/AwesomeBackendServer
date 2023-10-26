@@ -1,0 +1,61 @@
+
+
+// Importing the emailjs module
+import { Email } from 'emailjs';
+
+/**
+ * @function sendEmail
+ * @description Assist in sending emails
+ * @param {string} senderEmail - Email address of the sender
+ * @param {string} senderPassword - Password of the sender email
+ * @param {string} receiverEmail - Email address of the receiver
+ * @param {string} subject - The subject of the email
+ * @param {string} htmlContent - The HTML content of the email
+ * @returns {boolean} - Returns true if sending succeeds, false otherwise
+ */
+async function sendEmail(senderEmail, senderPassword, receiverEmail, subject, htmlContent) {
+  try {
+    // Server details are being laid out here. 
+    // We're using gmail smtp server
+    // These include the sender's email and password, smtp host and port
+    const server = Email.server.connect({
+      user: senderEmail,
+      password: senderPassword,
+      host: "smtp.gmail.com", // <-- added gmail smtp
+      port: 465, // <-- gmail smtp ssl port
+      ssl: true, // <-- enable ssl
+    });
+
+    // Mail details are being laid out here. 
+    const mailOptions = {
+      from: senderEmail, // <-- sender's email address
+      to: receiverEmail, // <-- email of the recipient
+      subject: subject, // <-- subject of the email
+      attachment: [{
+        data: htmlContent, // <-- actual html body of the email
+        alternative: true // <-- use it as an alternative option
+      }]
+    };
+
+    // Sending mail using defined server and mail options
+    // server.send method will take two parameters, first one is mail options and then callbacks
+    // An error or message is returned upon attempted delivery
+    server.send(mailOptions, (error, message) => {
+      if (error) {
+        console.log(`Error occurred: ${error.message}`);
+        return false;
+      } else {
+        console.log(`Message sent: ${message}`);
+        return true;
+      }
+    });
+  } catch (error) {
+    // Prints error and it's message to console in the case of an error
+    console.error(`Error occurred: ${error.message}`);
+    return false;
+  }
+}
+
+// Export function sendEmail
+export default sendEmail;
+

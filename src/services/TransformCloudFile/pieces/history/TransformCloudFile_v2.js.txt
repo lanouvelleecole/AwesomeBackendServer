@@ -1,0 +1,40 @@
+
+
+// This function is used to make Cloudinary transforms on an uploaded file 
+// Cloudinary is a cloud service that offers a solution to a web application's entire image management pipeline.
+async function TransformFile({  
+  publicId, // The public identifier of the uploaded video on Cloudinary
+  apiKey, // API key used for authentication
+  cloudName, // The name of the cloud storage where the file is stored in Cloudinary
+  transformations, // A list of transformations to apply to the video
+  onSuccess, // A callback function that handles successful transformations
+  onError, // A callback function that handles any errors that occur during transformations
+}) {  
+  try {    
+    // Sends a POST request to the Cloudinary API to edit the video based on given transformations
+    const response = await axios.post(      
+      `https://api.cloudinary.com/v1_1/${cloudName}/video/edit/${publicId}?api_key=${apiKey}`,      
+      transformations,      {        
+        headers: {          
+          "Content-Type": "application/json", // Specify the content type in header
+        },      
+      }    
+    );    
+    
+    // response.data contains the response data from the API. 
+    // In this case, it would be the transformed video file.
+    // Once the file is transformed successfully, we call the onSuccess function with the response data as argument
+    RunIfPossible({ func: onSuccess, args: response.data });    
+    
+    // Return the transformed data
+    return response.data;  
+  } catch (error) {    
+    // If an error occurs during fetching or transforming the video,
+    // it is caught and passed to the onError callback function
+    RunIfPossible({ func: onError, args: error });    
+    
+    // No return value when there's an error
+    return;  
+  }
+}
+

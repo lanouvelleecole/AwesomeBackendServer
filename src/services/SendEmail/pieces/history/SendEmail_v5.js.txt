@@ -1,0 +1,57 @@
+
+
+// Importing the nodemailer module
+// Nodemailer is used here instead of emailjs because
+// 1. It has better support and is more actively maintained
+// 2. It has built-in support for latest Node.js version
+// 3. It supports a wider range of email services
+import nodemailer from 'nodemailer';
+
+/**
+ * @function sendEmail
+ * @description Assist in sending emails
+ * @param {string} senderEmail - Email address of the sender
+ * @param {string} senderPassword - Password of the sender email
+ * @param {string} receiverEmail - Email address of the receiver
+ * @param {string} subject - The subject of the email
+ * @param {string} htmlContent - The HTML content of the email
+ * @returns {boolean} - Returns true if sending succeeds, false otherwise
+ */
+async function sendEmail(senderEmail, senderPassword, receiverEmail, subject, htmlContent) {
+  // We attempt to send the mail in try-catch block to handle error gracefully
+  try {
+    // Here we create a transporter using the details of our smtp server
+    // In this case we're using gmail's smtp server
+    let transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true, // use SSL
+      auth: {
+        user: senderEmail,
+        pass: senderPassword
+      }
+    });
+
+    // Here we define our email details. 
+    let mailOptions = {
+      from: senderEmail, // sender's email address
+      to: receiverEmail, // list of receivers
+      subject: subject, // subject line
+      html: htmlContent // html body
+    };
+
+    // Here we use our transporter to send the mail
+    let info = await transporter.sendMail(mailOptions);
+
+    console.log(`Message sent: ${info.messageId}`);
+    return true;
+  } catch (error) {
+    // If an error occurs, we catch it and print out the error message
+    console.error(`Error occurred: ${error.message}`);
+    return false;
+  }
+}
+
+// Here we export our function so it can be imported and used in other files
+export default sendEmail;
+

@@ -1,0 +1,47 @@
+
+
+// Import nodemailer module
+const nodemailer = require('nodemailer');
+
+/**
+ * @function SendEmail
+ * @description Assist in sending emails
+ * @param {string} senderEmail - Email address of the sender
+ * @param {string} senderPassword - Password of the sender email
+ * @param {string} receiverEmail - Email address of the receiver
+ * @param {string} subject - The subject of the email
+ * @param {string} htmlContent - The HTML content of the email
+ * @returns {boolean} - Returns true if sending succeeds, false otherwise
+ */
+async function sendEmail(senderEmail, senderPassword, receiverEmail, subject, htmlContent) {
+    try {
+        // Create a transporter object using SMTP transport
+        const transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com", // Specify the SMTP server gmail
+            port: 587, // Port number
+            secure: false, // true for 465, false for other ports
+            auth: {
+                user: senderEmail, // Sender's email address
+                pass: senderPassword, // Sender's password
+            },
+        });
+
+        // Mail details
+        const mailOptions = {
+            from: senderEmail, // Sender email address
+            to: receiverEmail, // Receiver email address
+            subject: subject, // Subject of email
+            html: htmlContent // HTML content of the email
+        };
+
+        // Sending mail
+        const info = await transporter.sendMail(mailOptions);
+        console.log(`Message sent: ${info.response}`);
+        return true;
+    } catch(error) {
+        console.error(`Error occurred: ${error.message}`);
+        return false;
+    }
+}
+module.exports = sendEmail;
+

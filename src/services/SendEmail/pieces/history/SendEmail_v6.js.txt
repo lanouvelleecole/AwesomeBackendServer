@@ -1,0 +1,56 @@
+
+
+// Import nodemailer module
+import nodemailer from 'nodemailer';
+
+/**
+ * @function sendEmail
+ * @description Function to send email
+ * @param {string} senderEmail - Email address of the sender
+ * @param {string} senderPassword - Password of the sender email
+ * @param {string} receiverEmail - Email address of the receiver
+ * @param {string} subject - The subject of the email
+ * @param {string} htmlContent - The HTML content of the email
+ * @returns {boolean} - Returns true if email is sent successfully, false otherwise
+ */
+async function sendEmail(senderEmail, senderPassword, receiverEmail, subject, htmlContent) {
+  try {
+    // Create a transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true, // true for 465, false for other ports
+      auth: {
+        user: senderEmail, // sender's email address
+        pass: senderPassword, // sender's password
+      },
+    });
+
+    // Setup email data with unicode symbols
+    let mailOptions = {
+      from: senderEmail, // sender's email address
+      to: receiverEmail, // list of receivers
+      subject: subject, // Subject line
+      html: htmlContent, // HTML body content
+    };
+
+    // Send email with defined transport object
+    let info = await transporter.sendMail(mailOptions);
+
+    // Log the messageId of the sent message
+    console.log(`Message sent: ${info.messageId}`);
+
+    // Return true as the email has been sent successfully
+    return true;
+  } catch (error) {
+    // Log the error message
+    console.error(`Error occurred while sending email: ${error.message}`);
+
+    // Return false as the email was not sent successfully
+    return false;
+  }
+}
+
+// Export the function to be imported and used in other files
+export default sendEmail;
+

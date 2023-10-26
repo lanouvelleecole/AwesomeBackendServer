@@ -1,0 +1,66 @@
+
+
+import axios from 'axios';
+
+/**
+ * This function is used to make Cloudinary transforms on an uploaded file.
+ * Cloudinary is a cloud service that offers a solution to a web application's entire image management pipeline.
+ * 
+ * @param {Object} params - Function parameters.
+ * @param {string} params.publicId - The publicId of the uploaded file on Cloudinary.
+ * @param {string} params.apiKey - The API key for authentication.
+ * @param {string} params.cloudName - The name of the cloud storage where the file is stored in Cloudinary.
+ * @param {Array.<Object>} params.transformations - A list of transformations to apply to the file.
+ * @param {string} [params.resourceType='auto'] - The type of the file (image, video etc.).
+ * @param {function} params.onSuccess - A callback function when the transformation process is successful.
+ * @param {function} params.onError - A callback function when there are errors during the transformation process.
+ */
+async function TransformCloudFile({  
+   publicId,
+   apiKey,  
+   cloudName,
+   transformations,  
+   resourceType='auto', 
+   onSuccess,  
+   onError
+}) {
+   try {
+      // Build the Cloudinary API URL with the provided cloudName, resourceType and publicId.
+      const apiUrl = `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload/${publicId}?api_key=${apiKey}`;
+      
+      // POST request to Cloudinary API to apply transformations.
+      const response = await axios.post(apiUrl, transformations, {
+         headers: {
+            "Content-Type": "application/json"
+         }
+      });
+
+      // Call onSuccess function if transformations successfully apply
+      // The RunIfPossible function checks to ensure function exists before invoking.
+      RunIfPossible({ func: onSuccess, args: response.data });
+
+      // Return the transformed data
+      return response.data;
+      
+   } catch (error) {
+      // Pass the error to onError callback function
+      RunIfPossible({ func: onError, args: error });
+      console.log("An error occurred while transforming the file", error);
+   }
+}
+
+/**
+ * Function to run a function if it is indeed a function to avoid runtime errors.
+ * 
+ * @param {Object} params - Function parameters.
+ * @param {function} params.func - The function to run.
+ * @param {any} params.args - The arguments to pass into the function.
+ */
+function RunIfPossible({ func, args }) {
+   if(typeof func === 'function') {
+      func(args);
+   }
+}
+
+export default TransformCloudFile;
+

@@ -1,0 +1,1 @@
+Send an email, and return true/false based on success/failure/error

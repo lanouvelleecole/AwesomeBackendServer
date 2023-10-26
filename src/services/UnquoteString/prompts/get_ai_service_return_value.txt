@@ -1,0 +1,1 @@
+First trim str, then unquote str. By 'unquote', I mean, if str, after trimming, starts and ends with the same kind of quote (' , " , or `), then remove the start and end quote off this string, if existing, and finally return the final string.

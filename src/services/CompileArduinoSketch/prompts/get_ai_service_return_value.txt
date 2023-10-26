@@ -1,0 +1,4 @@
+Compile code_string, and return the generated hex file content, as a string. 
+the onSuccess callback must be fed the same hex file content string that's returned.
+Use arduino-cli commands (my backend has it installed, so you can use arduino-cli commands via exec())
+If possible, delete all the generated stuff, when success, or error

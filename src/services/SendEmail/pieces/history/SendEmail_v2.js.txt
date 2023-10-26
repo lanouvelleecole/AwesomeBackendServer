@@ -1,0 +1,61 @@
+
+
+// Import SMTP module
+import smtp from 'smtp';
+
+/**
+ * @function SendEmail
+ * @description Assist in sending emails
+ * @param {string} senderEmail - Email address of the sender
+ * @param {string} senderPassword - Password of the sender email
+ * @param {string} receiverEmail - Email address of the receiver
+ * @param {string} subject - The subject of the email
+ * @param {string} htmlContent - The HTML content of the email
+ * @returns {boolean} - Returns true if sending succeeds, false otherwise
+ */
+ 
+// Wrapping the function inside to work with async/await
+async function sendEmail(senderEmail, senderPassword, receiverEmail, subject, htmlContent) {
+  try {
+    // Create a transporter object using smtp transport
+    // It's important to note that the host name and port might vary depending on the 
+    // SMTP service being used
+    const transporter = smtp.createTransport({
+      host: "smtp.example.com", 
+      port: 587, 
+      secure: false, 
+      auth: {
+        user: senderEmail, 
+        pass: senderPassword,
+      },
+    });
+
+    // Mail details are being laid out here. 
+    // These include the sender's email, receiver's email, subject of email and html content.
+    const mailOptions = { 
+      from: senderEmail,  
+      to: receiverEmail,  
+      subject: subject,  
+      html: htmlContent 
+    };
+
+    // Sending mail using the transporter object and mail options
+    // An info object is returned upon successful delivery
+    const info = await transporter.sendMail(mailOptions);
+
+    console.log(`Message sent: ${info.response}`);
+
+    // Returns true if no issues are encountered thereby meaning the mail was sent successfully.
+    return true;
+  } catch(error) {
+    // Prints error and it's message to console in the case of an error.
+    console.error(`Error occurred: ${error.message}`);
+    
+    // Returns false because an error was encounter
+    return false;
+  }
+}
+
+// Export function sendEmail
+export default sendEmail;
+

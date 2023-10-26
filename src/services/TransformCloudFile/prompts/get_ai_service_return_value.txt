@@ -1,0 +1,42 @@
+based on this function:
+
+async function UploadFileToCloudinary({
+  filePath,
+  apiKey,
+  cloudName,
+  uploadPreset,
+  onSuccess,
+  onError,
+}) {
+  try {
+    const formData = new FormData();
+    const fileStream = fs.createReadStream(filePath);
+
+    formData.append("file", fileStream);
+    formData.append("upload_preset", uploadPreset);
+
+    const response = await axios.post(
+      `https://api.cloudinary.com/v1_1/${cloudName}/upload?api_key=${apiKey}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    RunIfPossible({ func: onSuccess, args: response.data });
+
+    return response.data;
+  } catch (error) {
+    RunIfPossible({ func: onError, args: error });
+
+    return;
+  }
+}
+
+Give me a function TransformFile that perform cloudinary transform on  given some file data.
+
+Transforms Like adding text to a video, or concatenating videos, etc..
+
+Add comments describing what the output contains

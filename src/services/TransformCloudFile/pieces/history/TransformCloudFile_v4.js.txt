@@ -1,0 +1,61 @@
+
+
+import axios from 'axios';
+
+/**
+ * This function is used to make Cloudinary transforms on an uploaded file
+ * Cloudinary is a cloud service that offers a solution to a web application's entire image management pipeline
+ * @param publicId - The public identifier of the uploaded file on Cloudinary
+ * @param apiKey - API key used for authentication
+ * @param cloudName - The name of the cloud storage where the file is stored in Cloudinary
+ * @param transformations - A list of transformations to apply to the file
+ * @param resourceType - Type of the file (image, video etc.)
+ * @param onSuccess - A callback function that handles successful transformations
+ * @param onError - A callback function that handles any errors that occur during transformations
+ */
+async function TransformCloudFile({
+    publicId, 
+    apiKey, 
+    cloudName, 
+    transformations, 
+    resourceType 'auto', // The type of resource to be transformed. Added 'auto' which let cloudinary decide what type of resource it is based on the publicId
+    onSuccess, 
+    onError
+}) {
+    try {
+        // Build the Cloudinary API URL with the provided cloud name, resource type and public ID
+        const apiUrl = `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/edit/${publicId}?api_key=${apiKey}`;
+
+        // Send a POST request to the Cloudinary API to transform the file
+        const response = await axios.post(
+            apiUrl, 
+            transformations, 
+            { 
+                headers: { "Content-Type": "application/json" }, 
+            }
+        );
+
+        // Once the file is transformed successfully, call the onSuccess function with the response data as an argument
+        // The RunIfPossible function checks whether the passed function is indeed a function before calling it
+        RunIfPossible({ func: onSuccess, args: response.data });
+
+        // Return the transformed data
+        return response.data;
+    } catch (error) {
+        // If an error occurs during fetching or transforming the video,
+        // it is caught here and passed to the onError callback function
+        RunIfPossible({ func: onError, args: error });
+
+        // Log the error for debugging purposes
+        console.log("An error occurred while transforming the file", error);
+    }
+}
+
+function RunIfPossible({func, args}){
+    if(typeof func === 'function'){
+        func(args)
+    }
+}
+
+export default TransformCloudFile; 
+

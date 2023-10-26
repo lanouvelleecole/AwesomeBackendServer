@@ -1,0 +1,52 @@
+
+
+// We need to import axios to make HTTP requests
+import axios from 'axios';
+
+// A helper function to check if a function is defined before running it
+function RunIfPossible({ func, args }) {
+  if (func && typeof func === 'function') {
+    func(args);
+  }
+}
+  
+// This is the main function define based on the above requirements
+async function TransformCloudFile({
+  publicId, // The public identifier of the uploaded video on Cloudinary
+  apiKey, // API key used for authentication
+  cloudName, // The name of the cloud storage where the file is stored in Cloudinary
+  transformations, // A list of transformations to apply to the video
+  onSuccess, // A callback function that handles successful transformations
+  onError  // A callback function that handles any errors that occur during transformations
+}) {
+  try {
+    // Send a POST request to the Cloudinary API to edit the video based on the transformations
+    // axios.post submits a POST request. The first argument is the URL and the second is the data to be sent
+    const response = await axios.post(
+      `https://api.cloudinary.com/v1_1/${cloudName}/video/edit/${publicId}?api_key=${apiKey}`,
+      transformations,
+      {
+        headers: {
+          "Content-Type": "application/json", // Specify the content type as json
+        },
+      }
+    );
+
+    // Once the file is transformed successfully, we call the onSuccess function with the response data 
+    RunIfPossible({ func: onSuccess, args: response.data });
+
+    // Return the transformed data for further use
+    return response.data;
+  } catch (error) {
+    // If there's an error during the process, it will be caught by this error block
+
+    // The onError callback function is called with the error information
+    RunIfPossible({ func: onError, args: error });
+
+    // No return value when there's an error, we only call the onError callback
+    return;
+  }
+}
+
+export default TransformCloudFile;
+

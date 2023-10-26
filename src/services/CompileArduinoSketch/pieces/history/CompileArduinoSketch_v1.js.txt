@@ -1,0 +1,45 @@
+
+
+// Import the required Node.js module for executing shell commands
+import { exec } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+
+// Function to compile the Arduino source code
+export function CompileArduinoSketch(code_string, onSuccess, onError) {
+    // Create a temp file and write the code_string to it
+
+    let tempFilePath = path.join(__dirname, 'temp.ino');
+    fs.writeFileSync(tempFilePath, code_string);
+
+    // Command to compile the Arduino source code using arduino-cli
+    let cmd = `arduino-cli compile --fqbn arduino:avr:uno ${tempFilePath}`;
+
+    // Execute the command
+    exec(cmd, (err, stdout, stderr) => {
+        if (err) {
+            // If an error occurred during execution, call the onError callback and output the error
+            console.error(`Error occurred during execution: ${stderr}`);
+            onError(err);
+            return;
+        }
+
+        // Path to the generated hex file
+        let hexFilePath = path.join(__dirname, 'temp.arduino.avr.uno.hex');
+
+        // Read the contents of the hex file
+        try {
+            let hexFileContent = fs.readFileSync(hexFilePath, 'utf-8');
+            // Call the onSuccess callback with the hex file content
+            onSuccess(hexFileContent);
+
+            // Cleanup temp files
+            fs.unlinkSync(tempFilePath);
+            fs.unlinkSync(hexFilePath);
+        } catch (err) {
+            console.error(`Error reading hex file: ${err}`);
+            onError(err);
+        }
+    });
+}
+

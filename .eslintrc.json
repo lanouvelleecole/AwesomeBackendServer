@@ -1,0 +1,39 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "react-native/react-native": true
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    }
+  },
+  "plugins": ["react", "react-native", "unused-imports", "import"],
+  "rules": {
+    "no-debugger": "off",
+    //"no-unused-vars": ["warn", { "args": "none" }],
+    "no-unused-vars": 0,
+    "react/prop-types": "off",
+    "import/no-unresolved": [2, { "commonjs": true, "amd": true }],
+    //"unused-imports/no-unused-imports": "error"
+    "unused-imports/no-unused-imports": 0
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
+        "map": [
+          ["src", "./src"],
+          ["assets", "./assets"]
+        ]
+      }
+    }
+  }
+}

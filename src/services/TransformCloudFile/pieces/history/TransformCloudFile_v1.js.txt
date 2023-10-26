@@ -1,0 +1,53 @@
+
+
+/**
+ * Applies transformations to a file already uploaded to Cloudinary.
+ *
+ * @param {Object} params - The parameters for the transformation.
+ * @param {string} params.fileId - The ID of the file on Cloudinary.
+ * @param {string} params.apiKey - Your Cloudinary API key.
+ * @param {string} params.cloudName - Your Cloudinary cloud name.
+ * @param {Array} params.transformations - An array of transformations to apply.
+ * @param {Object} params.transformations[i] - A transformation.
+ * @param {string} params.transformations[i].effect - The Cloudinary effect to apply (e.g. "overlay").
+ * @param {string} params.transformations[i].value - The value for the effect (e.g. "text:arial_60:Hello").
+ * @param {function} [params.onSuccess] - A callback for successful transformations.
+ * @param {function} [params.onError] - A callback for failed transformations.
+ */
+async function TransformCloudFile({ fileId, apiKey, cloudName, transformations, onSuccess, onError }) {
+  try {
+    // Cloudinary's transformation API endpoint.
+    const url = `https://res.cloudinary.com/${cloudName}/image/upload`;
+
+    // Compose the transformation string for Cloudinary's API.
+    const transformationString = transformations.map(t => `${t.effect}:${t.value}`).join('/');
+
+    // The URL for the transformed file.
+    const transformedUrl = `${url}/${transformationString}/${fileId}`;
+
+    // Fetch the transformed file (this doesn't actually apply the transformations,
+    // rather it returns the transformed file's info if it exists, or an error if it doesn't).
+    const response = await axios.get(transformedUrl, {
+      headers: {
+        API_KEY: apiKey
+      }
+    });
+
+    // If there's a success callback, call it with the response's data.
+    if (typeof onSuccess === 'function') {
+      onSuccess(response.data);
+    }
+
+    // Return the transformed file's data.
+    return response.data;
+  } catch (error) {
+    // If there's an error callback, call it with the error.
+    if (typeof onError === 'function') {
+      onError(error);
+    }
+
+    // Return undefined upon error.
+    return;
+  }
+}
+

@@ -1,0 +1,63 @@
+Add the following fixes to this function:
+
+// Import the required modules
+import { exec } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
+
+// Function to compile the Arduino source code
+export function CompileArduinoSketch(code_string, onSuccess, onError) {
+    // Generate a unique file name to avoid conflicts in case of concurrent compilations
+    // We use the uuid module to generate a universally unique identifier
+    let fileName = uuidv4();
+
+    // Create the full path to the temp file by joining the current directory path (__dirname) and the file name
+    let tempFilePath = path.join(__dirname, `${fileName}.ino`);
+
+    // Writing the code_string to a temp file on disk
+    fs.writeFileSync(tempFilePath, code_string, { encoding: 'utf8', flag: 'w' });
+
+    // Create the command to compile the Arduino source code using arduino-cli
+    let cmd = `arduino-cli compile --fqbn arduino:avr:uno ${tempFilePath}`;
+
+    // Execute the command
+    exec(cmd, (err, stdout, stderr) => {
+        if (err) {
+            // If an error occurred during execution, log the error to console 
+            console.error(`Error occurred during execution: ${stderr}`);
+
+            // Call the onError callback with the error
+            onError(err);
+
+            // Stop the function execution
+            return;
+        }
+
+        // Create the path to the generated hex file
+        let hexFilePath = path.join(__dirname, `${fileName}.arduino.avr.uno.hex`);
+
+        // Try to read the contents of the hex file
+        try {
+            // Read the contents of the hex file and convert it to a string
+            let hexFileContent = fs.readFileSync(hexFilePath, 'utf-8');
+
+            // Call the onSuccess callback with the hex file content string
+            onSuccess(hexFileContent);
+
+        } catch (err) {
+            // If an error occurred while trying to read the hex file, log the error to console 
+            console.error(`Error reading hex file: ${err}`);
+
+            // Call the onError callback with the error
+            onError(err);
+        } finally {
+            // Cleanup by removing the temp file and the hex file to free up space
+            fs.unlinkSync(tempFilePath);
+            fs.unlinkSync(hexFilePath);
+        }
+    });
+}
+
+
+Fixes_should_be_here
