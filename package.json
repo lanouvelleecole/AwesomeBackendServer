@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "first-push": "npm run git-init && git add . && git commit -m \"first commit\" && git branch -M main && git remote add origin git@github.com:lanouvelleecole/AwesomeBackendServer.git && git push -u origin main",
+    "first-push": "npm run git-init && git add . && git commit -m \"first commit\" && git branch -M main && git remote add origin <YOUR_GITHUB_URL> && git push -u origin main",
     "git-init": "rimraf .git && git init",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./index",
