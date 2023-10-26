@@ -616,7 +616,10 @@ https://dashboard.stripe.com/test/apikeys
 
 <YOUR_PRIVATE_EMAIL> = Your private email address
 
-### 
+### .env
+
+<CLOUDINARY_URL> = The Cloudinary URL of your account, looking like 
+cloudinary://s4m3gibb3rysh@dpuvodetp
 
 ## Troubleshooting
 
