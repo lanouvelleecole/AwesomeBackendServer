@@ -27,16 +27,14 @@ export async function _myAPIEndpoint(req, res) {
     // le caviar kush, ze précieux,
     // pour le client.
     // accompagnées des données d'utilisation d'API
-    res.status(205).send({ data: outputData, usage: record });
+    res.status(200).send({ data: outputData, usage: record });
 
     return;
 
   }
 
-  // autrement, si cette clé API est valide...
+  // autrement, stop the adventure here...
   else {
-
-    // ...alors l'aventure s'arrête ici
     res
       .status(403)
       .send(
