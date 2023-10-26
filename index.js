@@ -34,6 +34,9 @@ export const apiPort = 8080;
 // pour notre sainte API
 export const app = express();
 
+/**
+ * 
+ * Uncomment this code if you want to monetize your API with Stripe
 
 // le secret key du compte stripe, dispo sections
 // developers du dashboard stripe
@@ -43,6 +46,8 @@ const stripe_secret_key = "<STRIPE_SECRET_KEY>";
 // initialse l'instance de stripe,
 // nécessaire pour pouvoir effectuer des requetes payantes
 const stripeInstance = new stripe(stripe_secret_key);
+
+*/
 
 // init de strings intl
 AppStrings();
@@ -73,25 +78,11 @@ FormatRequestBodies(app, express);
 */
 
 
-/** 
- * THIS SANDWICH CONTAINS ALL THE API ENDPOINTS 
- * YOU HAVE CREATED SO FAR. 
- * 
- * THIS IS TOP BREAD 
- **/
-
 /* PLOP_INJECT_ENDPOINT_INIT */
 
-/** 
- * THIS SANDWICH CONTAINS ALL THE API ENDPOINTS 
- * YOU HAVE CREATED SO FAR. 
- * 
- * THIS IS BOTTOM BREAD 
- **/
+
 
 /** 
- * THIS SANDWICH CONTAINS ALL THE API ENDPOINTS 
- * RELATED TO API MONETIZATION. 
  * 
  * Uncomment the 
  * 
@@ -100,8 +91,6 @@ FormatRequestBodies(app, express);
  * clientUsageEndpoint
  * 
  * endpoints if you want to monetize your server
- * 
- * THIS IS TOP BREAD 
  **/
 
 // crée un endpoint de type POST, pour paiements Stripe,
@@ -127,18 +116,12 @@ FormatRequestBodies(app, express);
 // GET http://localhost:<apiPort>/usage/cus_ID
 //clientUsageEndpoint(app, stripeInstance);
 
-/** 
- * THIS SANDWICH CONTAINS ALL THE API ENDPOINTS 
- * RELATED TO API MONETIZATION. 
- * 
- * THIS IS BOTTOM BREAD 
- **/
 
 // this is a dummy GET API endpoint for testing purposes.
 // crée un endpoint nommé myAPI (GET)
 // reachable via GET http://localhost:<apiPort>/myAPI
-// delete or comment this myAPIEndpoint(app, stripeInstance); line when in production 
-myAPIEndpoint(app, stripeInstance);
+// delete or comment this myAPIEndpoint(app); line when in production 
+myAPIEndpoint(app);
 
 // exécute l'appli express
 startServer(app);
