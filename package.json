@@ -5,14 +5,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "first-push": "npm run git-init && git add . && git commit -m \"first commit\" && git branch -M main && git remote add origin https://${GITHUB_TOKEN}@github.com/<username>/<repository>.git && git push -u origin main",
+    "first-push": "npm run git-init && git add . && git commit -m \"first commit\" && git branch -M main && git remote add origin https://${GITHUB_TOKEN}@github.com/<USERNAME>/<REPOSITORY>.git && git push -u origin main",
     "git-init": "rimraf .git && git init",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./index",
     "start_debug": "node --inspect ./index",
     "stripe": "stripe listen --forward-to localhost:8080/webhook",
     "restart-server": "pm2 start npm --name stripe-webhook -- run stripe && pm2 start npm --name my-express-server -- start && sudo service nginx restart && sudo nginx -t",
-    "push": "(git add . && git commit -m \"I'm a bigger pusher than Ice-T homie !!!\" && git push https://${GITHUB_TOKEN}@github.com/<username>/<repository>.git) || exit 0",
+    "push": "(git add . && git commit -m \"I'm a bigger pusher than Ice-T homie !!!\" && git push https://${GITHUB_TOKEN}@github.com/<USERNAME>/<REPOSITORY>.git) || exit 0",
     "push-dev": "(git add . && git commit -m \"I'm a bigger pusher than Ice-T homie !!!\" && git push) || exit 0",
     "login": "ssh root@<LINODE_IP>",
     "reboot": "sudo reboot"

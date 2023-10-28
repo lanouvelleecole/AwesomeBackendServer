@@ -579,9 +579,9 @@ Enjoy !
 
 <YOUR_GITHUB_URL> = the git@github url of your repo
 
-<username> = the github username
+<USERNAME> = the github username
 
-<repository> = the github repository
+<REPOSITORY> = the github repository
 
 ### index.js
 
