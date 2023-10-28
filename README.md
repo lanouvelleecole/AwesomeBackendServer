@@ -588,6 +588,14 @@ Enjoy !
 <STRIPE_SECRET_KEY> = The secret key of your Stripe account, available here: 
 https://dashboard.stripe.com/test/apikeys
 
+### src/services/FirestoreCRUD/FirebaseCRUD.js
+
+{
+  /* Your Firestore admin data belongs here */
+}
+
+should be replaced with the Firestore admin data available on your Firestore account:
+
 ### src/AppConstants/Constants.js
 
 <OPENAI_API_KEY> = The OpenAI account API Key
