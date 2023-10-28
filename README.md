@@ -579,6 +579,10 @@ Enjoy !
 
 <YOUR_GITHUB_URL> = the git@github url of your repo
 
+<username> = the github username
+
+<repository> = the github repository
+
 ### index.js
 
 <STRIPE_SECRET_KEY> = The secret key of your Stripe account, available here: 
