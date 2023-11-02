@@ -1,4 +1,5 @@
 export async function _checkoutEndpoint(stripe, req, res) {
+  // debugger;
 
   const { accessToken, idToken, firebase_uid, email, username, username_photo } = req.body;
 
@@ -21,6 +22,9 @@ export async function _checkoutEndpoint(stripe, req, res) {
         // le price id du produit stripe,
         // dispo section products du dashboard stripe
         price: "<STRIPE_ITEM_PRICE_ID>",
+
+        // how much of it
+        quantity: 1
       },
     ],
 
@@ -32,6 +36,11 @@ export async function _checkoutEndpoint(stripe, req, res) {
     // l'url vers laquelle la page de paiement redirigera si
     // paiement cancel/fail
     cancel_url: "<API_URL>/error.html",
+
+    // thanks to this param, you can differentiate 
+    // between the different purchases the user can make, 
+    // in the checkout success webhook
+    client_reference_id: "LifetimeAPISubscription"
   });
 
 

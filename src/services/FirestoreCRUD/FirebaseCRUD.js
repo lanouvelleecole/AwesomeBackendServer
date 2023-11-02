@@ -1,7 +1,8 @@
 import admin from "firebase-admin";
 
 // initialise cloud firestore avant utilisation
-let db = InitFirestore();
+// Replace null with InitFirestore(); before using the shizzle
+let db = null; //InitFirestore();
 
 // initialise cloud firestore avant utilisation
 export function InitFirestore() {

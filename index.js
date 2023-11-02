@@ -7,7 +7,7 @@ import { FormatRequestBodies } from "./src/services/FormatRequestBodies/FormatRe
 import { myAPIEndpoint } from "./src/endpoints/myAPIEndpoint/myAPIEndpoint.js";
 import { checkoutEndpoint } from "./src/endpoints/checkoutEndpoint/checkoutEndpoint.js";
 import { webhookEndpoint } from "./src/endpoints/webhookEndpoint/webhookEndpoint.js";
-import { clientUsageEndpoint } from "./src/endpoints/clientUsageEndpoint/clientUsageEndpoint.js";
+import { checkoutCreditsEndpoint } from './src/endpoints/checkoutCreditsEndpoint/checkoutCreditsEndpoint.js';
 
 import { startServer } from "./src/services/StartServer/StartServer.js";
 
@@ -16,6 +16,7 @@ import { startServer } from "./src/services/StartServer/StartServer.js";
 import { AppStrings } from "./src/stringRepos/AppStrings/AppStrings.js";
 import { InitCloudinary } from './src/services/UploadFileToCloudinary/InitCloudinary.js';
 import { Constants } from './src/AppConstants/Constants.js';
+import { HTTPSRedirect } from './src/services/HTTPSRedirect/HTTPSRedirect.js';
 
 /**
  * OYé OYé CITOYENS !!
@@ -55,6 +56,13 @@ AppStrings();
 // serve des fichiers html, for ze world
 app.use(express.static('public'));
 
+/**
+ * Uncomment this line of code below,
+ * if you want automatic 
+ * https redirection for all incoming API requests
+ */
+//HTTPSRedirect(app);
+
 /** 
  * Uncomment this code if you want to use Cloudinary 
  *
@@ -66,7 +74,6 @@ InitCloudinary({
 */
 
 /**
- * Uncomment this code if you want to monetize your server
  * 
  * To handle webhooks safely,
  * we need to verify the webhook signature to guarantee that it actually came from Stripe.
@@ -74,8 +81,9 @@ InitCloudinary({
  * The webhook requires the request body,
  * as a raw buffer,
  * which we can format with some express middleware.
+ */
 FormatRequestBodies(app, express);
-*/
+
 
 
 /* PLOP_INJECT_ENDPOINT_INIT */
@@ -88,7 +96,7 @@ FormatRequestBodies(app, express);
  * 
  * checkoutEndpoint, 
  * webhookEndpoint,
- * clientUsageEndpoint
+ * checkoutCreditsEndpoint
  * 
  * endpoints if you want to monetize your server
  **/
@@ -111,10 +119,13 @@ FormatRequestBodies(app, express);
 // (via email/phone)
 //webhookEndpoint(app, stripeInstance);
 
-// un endpoint qui permet de savoir
-// combien le client à utilisé l'API
-// GET http://localhost:<apiPort>/usage/cus_ID
-//clientUsageEndpoint(app, stripeInstance);
+
+// crée un endpoint de type POST, pour paiements Stripe,
+// ceci permet aux users
+// de souscrire à notre API, puis de recevoir 
+// un email de confirmation via le webhookEndpoint
+// reachable via http://localhost:<apiPort>/checkout<QTY_CREDITS>
+//checkoutCreditsEndpoint(app, stripeInstance, 5000);
 
 
 // this is a dummy GET API endpoint for testing purposes.
