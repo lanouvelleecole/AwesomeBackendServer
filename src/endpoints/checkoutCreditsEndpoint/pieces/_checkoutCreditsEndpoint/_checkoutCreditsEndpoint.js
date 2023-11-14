@@ -60,13 +60,13 @@ export async function _checkoutCreditsEndpoint(stripe, req, res, qtyCredits) {
     const session = await stripe.checkout.sessions.create({
 
       // the Stripe transaction type
-      mode: "payment",
+      mode: "<STRIPE_TRANSACTION_TYPE>",
 
       // l'adresse email optionnelle de l'user
       customer_email: email,
 
       // the stripe payment type(s)
-      payment_method_types: ["card"],
+      payment_method_types: ["<STRIPE_PAYMENT_TYPE>"],
 
       line_items: [
         {
@@ -74,6 +74,7 @@ export async function _checkoutCreditsEndpoint(stripe, req, res, qtyCredits) {
           // dispo section products du dashboard stripe
           price: GetTopupPriceID(qtyCredits),
 
+          // how much of it
           quantity: 1
         },
       ],
@@ -81,11 +82,11 @@ export async function _checkoutCreditsEndpoint(stripe, req, res, qtyCredits) {
       // l'url vers laquelle la page de paiement redirigera si
       // paiement successful
       success_url:
-        "https://maslowschool.net/success.html",
+        "<API_URL>/success.html",
 
       // l'url vers laquelle la page de paiement redirigera si
       // paiement cancel/fail
-      cancel_url: "https://maslowschool.net/error.html",
+      cancel_url: "<API_URL>/error.html",
 
       // thanks to this param, you can differentiate 
       // between the different purchases the user can make, 
@@ -114,7 +115,7 @@ export async function _checkoutCreditsEndpoint(stripe, req, res, qtyCredits) {
  */
 function GetTopupPriceID(qtyCredits) {
   if (qtyCredits == 5000) {
-    return "price_1O7JjnI2JcH1anyRB39P9PPe";
+    return "<STRIPE_ITEM_PRICE_ID>";
   } else {
     console.log(`Unknown API Credit topup qty: ${qtyCredits}`);
   }
