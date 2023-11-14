@@ -55,9 +55,8 @@ export async function _checkoutCreditsEndpoint(stripe, req, res, qtyCredits) {
 
     const { accessToken, idToken, firebase_uid, email, username, username_photo } = req.body;
 
-
-    
-    // more info here: 
+    // more info here:
+    // 
     // https://stripe.com/docs/api/checkout/sessions/create?lang=node
     const session = await stripe.checkout.sessions.create({
 
