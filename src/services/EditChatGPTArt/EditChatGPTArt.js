@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from "openai";
+/*import { Configuration, OpenAIApi } from "openai";
 import fs from "fs";
 import { GetUniqueID } from "../GetUniqueID/GetUniqueID.js";
 import { GetClientAPIKey } from "../GetFolderForClientData/GetFolderForClientData.js";
@@ -6,7 +6,7 @@ import { GetTransparentImage } from "../GetTransparentImage/GetTransparentImage.
 import { MaskPhotoPieces } from "../MaskPhotoPieces/MaskPhotoPieces.js";
 import { GetPhotoDimensions } from "../GetPhotoDimensions/GetPhotoDimensions.js";
 import { DeletePhotoGarbage } from "./pieces/DeletePhotoGarbage.js";
-
+*/
 // Use the fs module here
 
 async function EditChatGPTArt({
@@ -20,6 +20,7 @@ async function EditChatGPTArt({
   params,
   print = true,
 }) {
+  /*
   try {
     let image_url;
 
@@ -48,11 +49,11 @@ async function EditChatGPTArt({
     }
 
     return null;
-  }
+  }*/
 }
 
 async function EditArtUsingDallE({ apiKey, prompt, params, filePath, req }) {
-  let transparentPhotoPath, defaultTransparentPhotoPath, cheesePhotoPath;
+  /*let transparentPhotoPath, defaultTransparentPhotoPath, cheesePhotoPath;
 
   try {
     const configuration = new Configuration({
@@ -113,6 +114,7 @@ async function EditArtUsingDallE({ apiKey, prompt, params, filePath, req }) {
 
     return;
   }
+  */
 }
 
 export { EditChatGPTArt };

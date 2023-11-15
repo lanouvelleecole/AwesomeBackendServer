@@ -1,4 +1,4 @@
-import sharp from "sharp";
+/*import sharp from "sharp";
 
 export async function GetPhotoDimensions(filePath) {
   try {
@@ -10,3 +10,4 @@ export async function GetPhotoDimensions(filePath) {
     throw new Error("Failed to retrieve photo dimensions");
   }
 }
+*/

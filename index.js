@@ -17,6 +17,7 @@ import { AppStrings } from "./src/stringRepos/AppStrings/AppStrings.js";
 import { InitCloudinary } from './src/services/UploadFileToCloudinary/InitCloudinary.js';
 import { Constants } from './src/AppConstants/Constants.js';
 import { HTTPSRedirect } from './src/services/HTTPSRedirect/HTTPSRedirect.js';
+import { get_api_client_infoEndpoint } from "./src/endpoints/get_api_client_infoEndpoint/get_api_client_infoEndpoint.js";
 
 /**
  * OYé OYé CITOYENS !!
@@ -133,6 +134,10 @@ FormatRequestBodies(app, express);
 // reachable via GET http://localhost:<apiPort>/myAPI
 // delete or comment this myAPIEndpoint(app); line when in production 
 myAPIEndpoint(app);
+
+// crée un endpoint nommé get_api_client_info
+// reachable via http://localhost:<apiPort>/get_api_client_info
+get_api_client_infoEndpoint(app, stripeInstance);
 
 // exécute l'appli express
 startServer(app);
