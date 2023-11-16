@@ -14,7 +14,9 @@
     "restart-server": "pm2 start npm --name stripe-webhook -- run stripe && pm2 start npm --name my-express-server -- start && sudo service nginx restart && sudo nginx -t",
     "push": "(git add . && git commit -m \"I'm a bigger pusher than Ice-T homie !!!\" && git push) || exit 0",
     "login": "ssh root@<LINODE_IP>",
-    "reboot": "sudo reboot"
+    "reboot": "sudo reboot",
+    "redis-server-win10": "cd RedisWin10 && redis-server.exe",
+    "redis-cli-win10": "cd RedisWin10 && redis-cli.exe"
   },
   "keywords": [],
   "author": "",
@@ -35,10 +37,7 @@
     "openai": "^3.2.1",
     "postmark": "^3.1.1",
     "sendmail": "^1.6.1",
-    "stripe": "^12.10.0",
-    
-    "redis-server-win10": "cd RedisWin10 && redis-server.exe",
-    "redis-cli-win10": "cd RedisWin10 && redis-cli.exe"
+    "stripe": "^12.10.0"
   },
   "devDependencies": {
     "eslint": "^8.41.0",
