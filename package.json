@@ -35,7 +35,10 @@
     "openai": "^3.2.1",
     "postmark": "^3.1.1",
     "sendmail": "^1.6.1",
-    "stripe": "^12.10.0"
+    "stripe": "^12.10.0",
+    
+    "redis-server-win10": "cd RedisWin10 && redis-server.exe",
+    "redis-cli-win10": "cd RedisWin10 && redis-cli.exe"
   },
   "devDependencies": {
     "eslint": "^8.41.0",
